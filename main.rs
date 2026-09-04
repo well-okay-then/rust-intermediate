@@ -1,20 +1,25 @@
-use std::io::Read;
+use std::io::{self, BufRead};
 
-fn make_counter() -> impl FnMut() -> i32 {
-    let mut count = 0;
-    // return a closure that increments and returns count
-    move || {
-        count += 1;
-        count
+mod geometry {
+    pub fn circle_area(dim: f64) -> f64 {
+        dim * dim * 3.14
+    }
+
+    pub fn square_area(dim: f64) -> f64 {
+        dim * dim
     }
 }
 
 fn main() {
-    let mut input = String::new();
-    std::io::stdin().read_to_string(&mut input).unwrap();
-    let n: usize = input.split_whitespace().next().unwrap().parse().unwrap();
-    let mut c = make_counter();
-    for _ in 0..n {
-        println!("{}", c());
-    }
+    let stdin = io::stdin();
+    let mut lines = stdin.lock().lines();
+    let kind: String = lines.next().unwrap().unwrap();
+    let dim: f64 = lines.next().unwrap().unwrap().trim().parse().unwrap();
+
+    let area = if kind.trim() == "circle" {
+        geometry::circle_area(dim)
+    } else {
+        geometry::square_area(dim)
+    };
+    println!("{:.2}", area);
 }
