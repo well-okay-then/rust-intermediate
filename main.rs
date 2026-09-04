@@ -1,14 +1,19 @@
 use std::io::{self, BufRead};
 
-fn append_excl(s: &mut String) {
-    s.push('!');
+fn longer<'a>(a: &'a str, b: &'a str) -> &'a str {
+    if a.len() >= b.len() {
+        a
+    } else {
+        b
+    }
 }
 
 fn main() {
     let stdin = io::stdin();
-    let mut line = String::new();
-    stdin.lock().read_line(&mut line).unwrap();
-    let mut s = line.trim().to_string();
-    append_excl(&mut s);
-    println!("{}", s);
+    let mut lines = stdin.lock().lines();
+    let a = lines.next().unwrap().unwrap();
+    let b = lines.next().unwrap().unwrap();
+    println!("{}", longer(&a, &b));
+    let _ = a;
+    let _ = b;
 }
